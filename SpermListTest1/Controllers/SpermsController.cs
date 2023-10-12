@@ -25,8 +25,8 @@ namespace SpermListTest1.Controllers
         [HttpGet]
         public IActionResult SpermList()
         {
-            //var result = _CsvImport.ImportToDb();
-            return Ok();
+            var result = _SpermsServices.SpermList();
+            return Ok(result);
         }
 
         [HttpGet]
@@ -39,8 +39,10 @@ namespace SpermListTest1.Controllers
         [HttpGet]
         public IActionResult FilteredList([FromQuery] FilterModel filterModel)
         {
-
-            return Ok(_filterServices.SearchFilter(filterModel));
+            var result = _filterServices.SearchFilter(filterModel);
+            
+            return Ok(result);
+            
         }
 
         

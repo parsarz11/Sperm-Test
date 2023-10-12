@@ -31,9 +31,12 @@ namespace SpermListTest1.Services.FilterServices
             }else if(filterType == "Max")
             {
                 return Max(filterModel.index);
+
+            }else if (filterType == "SelectByValue")
+            {
+                return SelectByValue(filterModel.index, filterModel.value);
             }
-       
-        
+            
             return new List<sperm>();
         }
 
@@ -117,6 +120,26 @@ namespace SpermListTest1.Services.FilterServices
 
                 return filteredList;
             }
+        }
+
+        private List<sperm> SelectByValue(string type,double value)
+        {
+
+            var spermList =_DbData.GetSpermList();
+
+            var range = spermList.Select(x => x.GetType().GetProperty(type).GetValue(x).GetType()).FirstOrDefault();
+            if (range.Name == "Int32")
+            {
+
+                var FilteredList = spermList.Where(x => (int)x.GetType().GetProperty(type).GetValue(x) == value).ToList();
+                return FilteredList;
+            }else
+            {
+                var FilteredList = spermList.Where(x => (double)x.GetType().GetProperty(type).GetValue(x) == value).ToList();
+                return FilteredList;
+            }
+
+
         }
     }
 

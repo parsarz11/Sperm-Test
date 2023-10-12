@@ -22,7 +22,7 @@ namespace SpermListTest1.Services
 
         public void ImportToDb(string fileName)
         { 
-            string path = $"./FileDownloaded/{fileName}";
+            string path = $"./UploadedFiles/{fileName}";
 
             var spermVM = new List<sperm>();
             using(var SR = new StreamReader(path))
