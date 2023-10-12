@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SpermListTest1.data.entites;
+using SpermListTest1.Model;
 using SpermListTest1.Services;
+using SpermListTest1.Services.FilterServices;
 
 namespace SpermListTest1.Controllers
 {
@@ -9,11 +12,12 @@ namespace SpermListTest1.Controllers
     {
         private readonly SpermServices _SpermsServices;
         private readonly CsvImportToDb _CsvImport;
-
-        public SpermsController(SpermServices spermsServices, CsvImportToDb csvImport)
+        private readonly filterServices _filterServices;
+        public SpermsController(SpermServices spermsServices, CsvImportToDb csvImport,filterServices filterServices)
         {
             _SpermsServices = spermsServices;
             _CsvImport = csvImport;
+            _filterServices = filterServices;
         }
 
 
@@ -33,9 +37,12 @@ namespace SpermListTest1.Controllers
         }
 
         [HttpGet]
-        public IActionResult FilteredList()
+        public IActionResult FilteredList([FromQuery] FilterModel filterModel)
         {
-            return Ok();
+
+            return Ok(_filterServices.SearchFilter(filterModel));
         }
+
+        
     }
 }

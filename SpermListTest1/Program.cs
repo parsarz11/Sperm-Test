@@ -4,6 +4,7 @@ using SpermListTest1.data.context;
 using SpermListTest1.data.Repository;
 using SpermListTest1.Services;
 using SpermListTest1.Services.fileServices;
+using SpermListTest1.Services.FilterServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddScoped<SpermServices>();
 builder.Services.AddScoped<CsvImportToDb>();
 builder.Services.AddScoped<IData,DbRepository>();
 builder.Services.AddScoped<IFileService,FileService>();
+builder.Services.AddScoped<filterServices>();
 
 builder.Services.AddDbContext<DatabaseContext>(config =>
 {

@@ -7,5 +7,6 @@ namespace SpermListTest1.data
         public List<fileDetails> GetFileDetails();
         public void AddfileData(fileDetails fileDetails);
         public void AddSpermList(List<sperm> spermList);
+        public List<sperm> GetSpermList();
     }
 }

@@ -24,6 +24,10 @@ namespace SpermListTest1.data.Repository
             _dbContext.SaveChanges();
         }
 
+        public List<sperm> GetSpermList()
+        {
+            return _dbContext.Sperms.ToList();
+        }
         public List<fileDetails> GetFileDetails()
         {
             var FilesList = _dbContext.fileDetails.ToList();
