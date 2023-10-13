@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.IdentityModel.Tokens;
 using SpermListTest1.data;
 using SpermListTest1.data.entites;
-using SpermListTest1.Model;
+using SpermListTest1.Model.FilterModels;
 using System;
 using System.Text.RegularExpressions;
 
@@ -19,127 +20,78 @@ namespace SpermListTest1.Services.FilterServices
 
         public List<sperm> SearchFilter(FilterModel filterModel)
         {
-            var filterType = filterModel.FilterType;
-            
-            if(filterType == "Range")
-            {
-                return Range(filterModel.index, filterModel.min, filterModel.max);
 
-            }else if(filterType == "Min")
-            {
-                return Min(filterModel.index);
-            }else if(filterType == "Max")
-            {
-                return Max(filterModel.index);
-
-            }else if (filterType == "SelectByValue")
-            {
-                return SelectByValue(filterModel.index, filterModel.value);
-            }
-            
-            return new List<sperm>();
-        }
-
-
-        private List<sperm> Range(string type, double min, double max)
-        {
             var SpermList = _DbData.GetSpermList();
-            var range = SpermList.Select(x => x.GetType().GetProperty(type).GetValue(x).GetType()).FirstOrDefault();
+            var result = SpermList;
+
+            if (filterModel != null)
+            {
+                if (filterModel.No != null)
+                {
+                    result = result.Where(x => x.No == filterModel.No).ToList();
+                }
+                if(filterModel.RegNo != null)
+                {
+                    result = result.Where(x => x.RegNo == filterModel.RegNo).ToList();
+                }
+                if(filterModel.NAAB_CODE != null)
+                {
+                    result = result.Where(x => x.NAAB_CODE == filterModel.NAAB_CODE).ToList();
+                }
+                if(filterModel.NAME != null)
+                {
+                    result = result.Where(x=> x.NAME == filterModel.NAME).ToList();
+                }
+                if (filterModel.SIRE != null)
+                {
+                    result = result.Where(x => x.SIRE == filterModel.SIRE).ToList();
+                }
+                if (filterModel.MGS != null)
+                {
+                    result = result.Where(x => x.MGS == filterModel.MGS).ToList();
+                }
+                if (filterModel.Range != null)
+                {
+                    result = Range(filterModel.Range, result);
+                }
+
+                return result;
+            }
+
+
+            return result;
+        }
+
+
+        private List<sperm> Range(FilterRangeModel rangeModel,List<sperm> response)
+        {
+
             
 
-            if(range.Name == "Int32")
-            {
-                var filterdList = SpermList.Where(x => (int)x.GetType().GetProperty(type).GetValue(x) >= min && (int)x.GetType().GetProperty(type).GetValue(x) <= max)
-                .ToList();
-                
-                return filterdList;
-            }
-            else
-            {
-                var filterdList = SpermList.Where(x => (double)x.GetType().GetProperty(type).GetValue(x) >= min && (double)x.GetType().GetProperty(type).GetValue(x) <= max)
-               .ToList();
-
-                
-                return filterdList;
-            }
-
             
-        }
+            var result = response;
 
-        private List<sperm> Min(string type)
-        {
-            var spermList = _DbData.GetSpermList();
-            var range = spermList.Select(x => x.GetType().GetProperty(type).GetValue(x).GetType()).FirstOrDefault();
-            if (range.Name == "Int32")
+            if (rangeModel.MinValue != null && rangeModel.MaxValue != null)
             {
-
-                var filterdByType = spermList.Select(x => (int)x.GetType().GetProperty(type).GetValue(x)).ToList();
-                var min = filterdByType.Min();
-
-                var filteredList = spermList.Where(x => x.GetType().GetProperty(type).GetValue(x).Equals(min)).ToList();
-
-
-                return filteredList;
-            }
-            else
-            {
-
-                var filterdByType = spermList.Select(x => (double)x.GetType().GetProperty(type).GetValue(x)).ToList();
-                var max = filterdByType.Max();
-
-                var filteredList = spermList.Where(x => x.GetType().GetProperty(type).GetValue(x).Equals(max)).ToList();
-
-
-                return filteredList;
+                result = response.Where(x => (double)x.GetType().GetProperty(rangeModel.Index).GetValue(x)
+                >= rangeModel.MinValue && (double)x.GetType().GetProperty(rangeModel.Index).GetValue(x
+                ) <= rangeModel.MaxValue).ToList();
             }
 
-        }
-
-        private List<sperm> Max(string type)
-        {
-            var spermList = _DbData.GetSpermList();
-            var range = spermList.Select(x => x.GetType().GetProperty(type).GetValue(x).GetType()).FirstOrDefault();
-            if (range.Name == "Int32")
+            else if (rangeModel.MinValue != null)
             {
-                
-                var filterdByType = spermList.Select(x => (int)x.GetType().GetProperty(type).GetValue(x)).ToList();
-                var max = filterdByType.Max();
-
-                var filteredList = spermList.Where(x => x.GetType().GetProperty(type).GetValue(x).Equals(max)).ToList();
-
-
-                return filteredList;
-            }else
-            {
-                
-                var filterdByType = spermList.Select(x => (double)x.GetType().GetProperty(type).GetValue(x)).ToList();
-                var max = filterdByType.Max();
-
-                var filteredList = spermList.Where(x => x.GetType().GetProperty(type).GetValue(x).Equals(max)).ToList();
-
-
-                return filteredList;
-            }
-        }
-
-        private List<sperm> SelectByValue(string type,double value)
-        {
-
-            var spermList =_DbData.GetSpermList();
-
-            var range = spermList.Select(x => x.GetType().GetProperty(type).GetValue(x).GetType()).FirstOrDefault();
-            if (range.Name == "Int32")
-            {
-
-                var FilteredList = spermList.Where(x => (int)x.GetType().GetProperty(type).GetValue(x) == value).ToList();
-                return FilteredList;
-            }else
-            {
-                var FilteredList = spermList.Where(x => (double)x.GetType().GetProperty(type).GetValue(x) == value).ToList();
-                return FilteredList;
+                result = response.Where(x => (double)x.GetType().GetProperty(rangeModel.Index).GetValue(x)
+                >= rangeModel.MinValue).ToList();
             }
 
+            else if (rangeModel.MaxValue != null)
+            {
+                result = response.Where(x => (double)x.GetType().GetProperty(rangeModel.Index).GetValue(x)
+                >= rangeModel.MaxValue).ToList();
+            }
 
+            return result;
+            
         }
     }
 

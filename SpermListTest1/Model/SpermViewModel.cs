@@ -18,15 +18,15 @@ namespace SpermListTest1.Model
         [Index(4)]
         public double ICC { get; set; }
         [Index(5)]
-        public int LNM { get; set; }
+        public double LNM { get; set; }
         [Index(6)]
-        public int LFM { get; set; }
+        public double LFM { get; set; }
         [Index(7)]
-        public int MILK { get; set; }
+        public double MILK { get; set; }
         [Index(8)]
         public double FAT { get; set; }
         [Index(9)]
-        public int PRO { get; set; }
+        public double PRO { get; set; }
         [Index(10)]
         public double SCE { get; set; }
         [Index(11)]
@@ -40,7 +40,7 @@ namespace SpermListTest1.Model
         [Index(15)]
         public double FLC { get; set; }
         [Index(16)]
-        public int TPI { get; set; }
+        public double TPI { get; set; }
         [Index(17)]
         public string SIRE { get; set; }
         [Index(18)]

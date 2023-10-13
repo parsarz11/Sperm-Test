@@ -67,18 +67,18 @@ namespace SpermListTest1.Migrations
                     b.Property<double>("ICC")
                         .HasColumnType("float");
 
-                    b.Property<int>("LFM")
-                        .HasColumnType("int");
+                    b.Property<double>("LFM")
+                        .HasColumnType("float");
 
-                    b.Property<int>("LNM")
-                        .HasColumnType("int");
+                    b.Property<double>("LNM")
+                        .HasColumnType("float");
 
                     b.Property<string>("MGS")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MILK")
-                        .HasColumnType("int");
+                    b.Property<double>("MILK")
+                        .HasColumnType("float");
 
                     b.Property<string>("NAAB_CODE")
                         .IsRequired()
@@ -94,8 +94,8 @@ namespace SpermListTest1.Migrations
                     b.Property<double>("PL")
                         .HasColumnType("float");
 
-                    b.Property<int>("PRO")
-                        .HasColumnType("int");
+                    b.Property<double>("PRO")
+                        .HasColumnType("float");
 
                     b.Property<double>("PTAT")
                         .HasColumnType("float");
@@ -110,8 +110,8 @@ namespace SpermListTest1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TPI")
-                        .HasColumnType("int");
+                    b.Property<double>("TPI")
+                        .HasColumnType("float");
 
                     b.Property<double>("UDC")
                         .HasColumnType("float");

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SpermListTest1.data.entites;
 using SpermListTest1.Model;
+using SpermListTest1.Model.FilterModels;
 using SpermListTest1.Services;
 using SpermListTest1.Services.FilterServices;
 
