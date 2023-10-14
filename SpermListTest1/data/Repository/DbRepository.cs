@@ -25,7 +25,7 @@ namespace SpermListTest1.data.Repository
         }
 
         public List<sperm> GetSpermList()
-        {
+        { 
             return _dbContext.Sperms.ToList();
         }
         public List<fileDetails> GetFileDetails()

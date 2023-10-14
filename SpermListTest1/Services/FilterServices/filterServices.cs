@@ -87,7 +87,7 @@ namespace SpermListTest1.Services.FilterServices
             else if (rangeModel.MaxValue != null)
             {
                 result = response.Where(x => (double)x.GetType().GetProperty(rangeModel.Index).GetValue(x)
-                >= rangeModel.MaxValue).ToList();
+                <= rangeModel.MaxValue).ToList();
             }
 
             return result;
