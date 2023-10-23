@@ -40,6 +40,7 @@ namespace SpermListTest1.Controllers
         [HttpGet]
         public IActionResult FilteredList([FromQuery] FilterModel filterModel)
         {
+
             var result = _filterServices.SearchFilter(filterModel);
             
             return Ok(result);

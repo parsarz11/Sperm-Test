@@ -26,6 +26,6 @@
         public string? NAME { get; set; }
         public string? SIRE { get; set; }
         public string? MGS { get; set; }
-        public FilterRangeModel? Range { get; set; }
+        public string? Range { get; set; }
     }
 }

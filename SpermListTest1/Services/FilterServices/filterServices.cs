@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using SpermListTest1.data;
 using SpermListTest1.data.entites;
 using SpermListTest1.Model.FilterModels;
 using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace SpermListTest1.Services.FilterServices
@@ -63,37 +66,48 @@ namespace SpermListTest1.Services.FilterServices
         }
 
 
-        private List<sperm> Range(FilterRangeModel rangeModel,List<sperm> response)
+        private List<sperm> Range(string filterRanges,List<sperm> response)
         {
 
-            
 
-            
             var result = response;
+            
 
-            if (rangeModel.MinValue != null && rangeModel.MaxValue != null)
-            {
-                result = response.Where(x => (double)x.GetType().GetProperty(rangeModel.Index).GetValue(x)
-                >= rangeModel.MinValue && (double)x.GetType().GetProperty(rangeModel.Index).GetValue(x
-                ) <= rangeModel.MaxValue).ToList();
+
+            var range = JsonSerializer.Deserialize<DeserializerJsonModel>(filterRanges);
+            if (range == null) 
+            { 
+                return result;
             }
 
-            else if (rangeModel.MinValue != null)
+            foreach (var index in range.filters)
             {
-                result = response.Where(x => (double)x.GetType().GetProperty(rangeModel.Index).GetValue(x)
-                >= rangeModel.MinValue).ToList();
-            }
+                
+                    if (index.MinValue != null && index.MaxValue != null)
+                    {
+                        result = response.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
+                        >= index.MinValue && (double)x.GetType().GetProperty(index.Index).GetValue(x) <= index.MaxValue).ToList();
+                    }
 
-            else if (rangeModel.MaxValue != null)
-            {
-                result = response.Where(x => (double)x.GetType().GetProperty(rangeModel.Index).GetValue(x)
-                <= rangeModel.MaxValue).ToList();
+                    else if (index.MinValue != null)
+                    {
+                        result = response.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
+                        >= index.MinValue).ToList();
+                    }
+
+                    else if (index.MaxValue != null)
+                    {
+                        result = response.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
+                        <= index.MaxValue).ToList();
+                    }
             }
 
             return result;
-            
         }
+
+        
     }
 
-    
 }
+
+
